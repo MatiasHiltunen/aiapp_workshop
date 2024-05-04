@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'dart:io';
  
 import 'package:http/http.dart' as http;
-import 'package:ansi_styles/ansi_styles.dart';
- 
- 
+
 final List<Messages> messageHistory = [
   Messages(content: 'Olen FrostBit-ohjelmistolaboratorion oma tekoäly, toimin asiantuntijan roolissa. FrostBit on Lapin Ammattikorkeakoulun ohjelmistolaboratorio ja osallistun myös opetukseen, puhun selvää suomenkieltä ja kerron välillä puujalkavitsejä. Vastaan kysymyksiin ammattimaisesti.', role: 'system')
 ];

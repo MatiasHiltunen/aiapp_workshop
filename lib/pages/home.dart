@@ -3,11 +3,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:go_router/go_router.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  final String title;
+  final Widget child;
+
+  const MyHomePage({super.key, required this.child});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -26,10 +28,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   late AnimationController _hideBottomBarAnimationController;
 
   final iconList = <IconData>[
-    Icons.brightness_5,
-    Icons.brightness_4,
-    Icons.brightness_6,
-    Icons.brightness_7,
+    Icons.home_filled,
+    Icons.chat_bubble,
+    Icons.person,
+    Icons.settings,
+  ];
+
+  final List<String> routes = [
+    "/",
+    "/chat",
+    "/account",
+    "/settings"
   ];
 
   @override
@@ -97,27 +106,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     final colors = Theme.of(context);
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
-        title: Text(
-          widget.title,
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
       body: NotificationListener<ScrollNotification>(
         onNotification: onScrollNotification,
-        child: NavigationScreen(iconList[_bottomNavIndex]),
+        child: widget.child,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.brightness_3,
-          color: colors.primaryColor,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.mic,
+            color: colors.primaryColor,
+          ),
+          onPressed: () {
+            _fabAnimationController.reset();
+            _borderRadiusAnimationController.reset();
+            _borderRadiusAnimationController.forward();
+            _fabAnimationController.forward();
+          },
         ),
-        onPressed: () {
-          _fabAnimationController.reset();
-          _borderRadiusAnimationController.reset();
-          _borderRadiusAnimationController.forward();
-          _fabAnimationController.forward();
-        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
@@ -157,7 +163,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         gapLocation: GapLocation.center,
         leftCornerRadius: 32,
         rightCornerRadius: 32,
-        onTap: (index) => setState(() => _bottomNavIndex = index),
+        onTap: (index) => setState(() {
+          _bottomNavIndex = index;
+          context.go(routes[index]);
+        }),
         hideAnimationController: _hideBottomBarAnimationController,
         shadow: BoxShadow(
           offset: Offset(0, 1),
