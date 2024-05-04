@@ -1,10 +1,17 @@
+import 'package:aiapp/providers/openai.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'pages/home.dart';
 import 'pages/chat.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MultiProvider(
+  providers: [
+    ChangeNotifierProvider(create: (_) => OpenAIProvider())
+  ],
+  child: MyApp(),  
+  ));
 
 final GoRouter _router = GoRouter(
 

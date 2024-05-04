@@ -1,17 +1,19 @@
-import 'messages.dart';
+
+
+import 'message.dart';
 
 class OpenAIModel {
   late final String model;
-  List<Messages>? messages;
+  List<Message>? messages;
  
   OpenAIModel({required this.model, this.messages});
  
   OpenAIModel.fromJson(Map<String, dynamic> json, this.model) {
     model = json['model'] ?? 'gpt-3.5-turbo';
     if (json['messages'] != null) {
-      messages = <Messages>[];
+      messages = <Message>[];
       json['messages'].forEach((v) {
-        messages!.add(Messages.fromJson(v));
+        messages!.add(Message.fromJson(v));
       });
     }
   }
